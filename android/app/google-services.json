@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "226962482030",
+    "firebase_url": "https://jovial-world-275811.firebaseio.com",
+    "project_id": "jovial-world-275811",
+    "storage_bucket": "jovial-world-275811.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226962482030:android:ab1db1ec0c9ddc9645577f",
+        "android_client_info": {
+          "package_name": "com.example.chat_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226962482030-i3lrb30rh57g66t5rbl3ipo6fdtnt7ct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chat_bloc",
+            "certificate_hash": "55264ca6406a88a888fa2c6f91be692ef696f2a5"
+          }
+        },
+        {
+          "client_id": "226962482030-g29j8m4l56dtgt4lhoeejve1thr9ljl8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSCnHA-C94F_18GlWUHJOqNjH7aZ5H99I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226962482030-g29j8m4l56dtgt4lhoeejve1thr9ljl8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
