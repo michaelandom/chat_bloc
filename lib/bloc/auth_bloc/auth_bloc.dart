@@ -10,6 +10,7 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
+  AuthService authService = AuthService();
   AuthBloc() : super(AuthInitial());
 
   @override
@@ -18,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async* {
     if (event is GoogleSignInEvent) {
       yield AuthLoading();
-      final result = await AuthService.signInWithGoogle();
+      final result = await authService.signInWithGoogle();
       if (result) {
         yield AuthSignedIn();
         localPreference.set(HSharedPreference.USER_STATES, result);
@@ -28,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     if (event is SignOutEvent) {
       yield AuthLoading();
-      final result = await AuthService.signOut();
+      final result = await authService.signOut();
       if (result) {
         yield AuthSignedOut();
         localPreference.set(HSharedPreference.USER_STATES, false);
@@ -41,8 +42,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     if (event is EmailAndPasswordSignUpEvent) {
       yield AuthLoadingEmail();
-      final result = await AuthService.signUpWithEmailAndPassword(
-          event.email, event.password);
+      final result = await authService.signUpWithEmailAndPassword(
+          event.username, event.email, event.password);
       if (result) {
         yield AuthSignedIn();
         localPreference.set(HSharedPreference.USER_STATES, result);
@@ -52,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     if (event is EmailAndPasswordSignInEvent) {
       yield AuthLoadingEmail();
-      final result = await AuthService.signInWithEmailAndPassword(
+      final result = await authService.signInWithEmailAndPassword(
           event.email, event.password);
       if (result) {
         yield AuthSignedIn();
@@ -63,9 +64,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
     if (event is ResetPasswordEvent) {
       yield AuthLoadingEmail();
-      final result = await AuthService.resetPassword(event.email) ?? false;
+      final result = await authService.resetPassword(event.email) ?? false;
       if (result) {
-        // yield AuthResetPassword();
+        yield AuthResetPassword();
       } else {
         yield AuthError();
       }

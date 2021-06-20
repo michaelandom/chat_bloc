@@ -1,4 +1,5 @@
 import 'package:chat_bloc/bloc/auth_bloc/auth_bloc.dart';
+import 'package:chat_bloc/bloc/chat/chat_bloc.dart';
 import 'package:chat_bloc/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ChatBloc(),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(

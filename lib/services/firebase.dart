@@ -1,11 +1,11 @@
+import 'package:chat_bloc/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  static Future<bool> signInWithEmailAndPassword(
-      String email, String password) async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  DataBaseFunction dataBaseFunction = DataBaseFunction();
+  Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -16,19 +16,20 @@ class AuthService {
     return false;
   }
 
-  static Future signUpWithEmailAndPassword(
-      String email, String password) async {
+  Future signUpWithEmailAndPassword(
+      String userName, String email, String password) async {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      return true;
+      final result = await dataBaseFunction.uploadUserInfo(userName, email);
+      return result;
     } catch (e) {
       print(e);
     }
     return false;
   }
 
-  static Future resetPassword(String email) async {
+  Future resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return true;
@@ -38,7 +39,7 @@ class AuthService {
     return false;
   }
 
-  static Future<bool> signInWithGoogle() async {
+  Future<bool> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
@@ -53,7 +54,14 @@ class AuthService {
       );
 
       // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final userData =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      if (userData.additionalUserInfo.isNewUser) {
+        await dataBaseFunction.uploadUserInfo(
+            userData.additionalUserInfo.username,
+            userData.additionalUserInfo.providerId);
+      }
+
       return true;
     } catch (e) {
       print("error is $e");
@@ -61,7 +69,7 @@ class AuthService {
     return false;
   }
 
-  static Future<bool> signOut() async {
+  Future<bool> signOut() async {
     try {
       await _auth.signOut();
       return true;
