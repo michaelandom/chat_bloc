@@ -31,6 +31,7 @@ class AuthService {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       final result = await dataBaseFunction.uploadUserInfo(userName, email);
+      localPreference.set(HSharedPreference.USER_NAME, userName);
       return result;
     } catch (e) {
       print(e);

@@ -20,9 +20,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String currentUser;
 
   Future<String> userGet() async {
-    final user = await localPreference.get(HSharedPreference.USER_NAME);
-    BlocProvider.of<ChatBloc>(context).add(GetChatRoom(userName: user));
-    return user;
+    currentUser = await localPreference.get(HSharedPreference.USER_NAME);
+    BlocProvider.of<ChatBloc>(context).add(GetChatRoom(userName: currentUser));
+    return currentUser;
   }
 
   @override
@@ -61,7 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           return ListTile(
                             leading: CircularProgressIndicator(),
                             title: Text(
-                              state.chatRoomList[index]["userList"][0],
+                              state.chatRoomList[index]["userList"][0] ==
+                                      currentUser
+                                  ? state.chatRoomList[index]["userList"][1]
+                                  : state.chatRoomList[index]["userList"][0],
                               style: mediumTextFormFiledStyle(),
                             ),
                             subtitle: Text(
