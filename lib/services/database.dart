@@ -1,13 +1,27 @@
+import 'package:chat_bloc/db/k_shared_preference.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class DataBaseFunction {
+  HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
+
   Future<dynamic> getUserByUsername(String userName) async {
     try {
       final userData = await FirebaseFirestore.instance
           .collection("users")
-          .doc(userName)
+          .where("userName", isEqualTo: userName)
           .get();
+      return userData.docs;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  Future<dynamic> getUserByEmail(String email) async {
+    try {
+      final userData =
+          await FirebaseFirestore.instance.collection("users").doc(email).get();
+
       return userData;
     } catch (e) {
       print(e);
@@ -20,7 +34,7 @@ class DataBaseFunction {
     try {
       await FirebaseFirestore.instance
           .collection("users")
-          .doc(userName)
+          .doc(email)
           .set(userMap);
       return true;
     } catch (e) {
@@ -30,17 +44,31 @@ class DataBaseFunction {
   }
 
   Future<bool> createChatRoom(String userName) async {
-    List userList = [userName, FirebaseAuth.instance.currentUser.email];
+    final currentUser = await localPreference.get(HSharedPreference.USER_NAME);
+    List userList = [userName, currentUser];
     Map<String, dynamic> userMap = {
       "userList": userList,
-      "chatRoomId": "$userName${FirebaseAuth.instance.currentUser.email}"
+      "chatRoomId": "$userName-$currentUser"
     };
     try {
       await FirebaseFirestore.instance
           .collection("chatRoom")
-          .doc("$userName${FirebaseAuth.instance.currentUser.email}")
+          .doc("$userName-$currentUser")
           .set(userMap);
       return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  Future<dynamic> getChatRoomList(String userName) async {
+    try {
+      final userData = await FirebaseFirestore.instance
+          .collection("chatRoom")
+          .where("userList", arrayContains: userName)
+          .get();
+      return userData.docs;
     } catch (e) {
       print(e);
     }

@@ -15,14 +15,16 @@ class ChatLoading extends ChatState {
 }
 
 class ChatSingleResult extends ChatState {
-  final String email;
-  final String userName;
-  ChatSingleResult({this.email, this.userName});
+  final List userList;
+  ChatSingleResult({this.userList});
   @override
   List<Object> get props => [];
 }
 
 class ChatResult extends ChatState {
+  final List chatRoomList;
+
+  ChatResult({this.chatRoomList});
   @override
   List<Object> get props => [];
 }

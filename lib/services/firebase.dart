@@ -1,14 +1,23 @@
+import 'package:chat_bloc/db/k_shared_preference.dart';
 import 'package:chat_bloc/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+  HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   DataBaseFunction dataBaseFunction = DataBaseFunction();
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      final result = await dataBaseFunction.getUserByEmail(email);
+      if (result != null) {
+        print("${result["userName"]}${result["email"]}");
+        localPreference.set(HSharedPreference.USER_NAME, result["userName"]);
+      } else {
+        return false;
+      }
       return true;
     } catch (e) {
       print(e);
@@ -60,8 +69,19 @@ class AuthService {
         await dataBaseFunction.uploadUserInfo(
             userData.additionalUserInfo.username,
             userData.additionalUserInfo.providerId);
+        localPreference.set(
+            HSharedPreference.USER_NAME, userData.additionalUserInfo.username);
+      } else {
+        final result = await dataBaseFunction
+            .getUserByEmail(userData.additionalUserInfo.providerId);
+        if (result != null) {
+          print("$result");
+          print("${result["userName"]}${result["email"]}");
+          localPreference.set(HSharedPreference.USER_NAME, result["userName"]);
+        } else {
+          return false;
+        }
       }
-
       return true;
     } catch (e) {
       print("error is $e");

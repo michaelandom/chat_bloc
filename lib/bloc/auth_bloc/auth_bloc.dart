@@ -33,6 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (result) {
         yield AuthSignedOut();
         localPreference.set(HSharedPreference.USER_STATES, false);
+        localPreference.set(HSharedPreference.USER_NAME, "");
       } else {
         yield AuthError();
       }

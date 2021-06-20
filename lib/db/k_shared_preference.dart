@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HSharedPreference {
   static const KEY_FIRST_TIME = "FIRST_TIME";
   static const USER_STATES = "USER_STATES";
-
+  static const USER_NAME = "USER_NAME";
   static const LOCALE = "LOCALE";
   static const THEME = "THEME";
 

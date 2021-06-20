@@ -19,10 +19,29 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event is SearchUser) {
       yield ChatLoading();
       final result = await dataBaseFunction.getUserByUsername(event.username);
-      if (result != null && result != false) {
-        yield ChatSingleResult(
-            email: result["email"], userName: result["userName"]);
-      } else if (result == null) {
+      if (result is List ? result.length > 0 : false) {
+        yield ChatSingleResult(userList: result);
+      } else if (result is List ? result.length == 0 : false) {
+        yield ChatNotFound();
+      } else {
+        yield ChatError();
+      }
+    }
+    if (event is ChatRoomCreate) {
+      yield ChatLoading();
+      final result = await dataBaseFunction.createChatRoom(event.userName);
+      if (result) {
+        yield ChatAdded();
+      } else {
+        yield ChatError();
+      }
+    }
+    if (event is GetChatRoom) {
+      yield ChatLoading();
+      final result = await dataBaseFunction.getChatRoomList(event.userName);
+      if (result is List ? result.length > 0 : false) {
+        yield ChatResult(chatRoomList: result);
+      } else if (result is List ? result.length == 0 : false) {
         yield ChatNotFound();
       } else {
         yield ChatError();

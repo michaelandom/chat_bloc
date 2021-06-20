@@ -69,26 +69,37 @@ class _SearchPageState extends State<SearchPage> {
             BlocBuilder<ChatBloc, ChatState>(
               builder: (context, state) {
                 if (state is ChatSingleResult) {
+                  print("state.userList ${state.userList}");
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 16),
-                    child: ListTile(
-                      title: Text(
-                        state.userName,
-                        style: mediumTextFormFiledStyle(),
-                      ),
-                      subtitle: Text(
-                        state.email,
-                        style: mediumTextFormFiledStyle(),
-                      ),
-                      trailing: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Message",
-                          style: mediumTextFormFiledStyle(),
-                        ),
-                      ),
-                    ),
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.userList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              state.userList[index]["userName"],
+                              style: mediumTextFormFiledStyle(),
+                            ),
+                            subtitle: Text(
+                              state.userList[index]["email"],
+                              style: mediumTextFormFiledStyle(),
+                            ),
+                            trailing: ElevatedButton(
+                              onPressed: () {
+                                BlocProvider.of<ChatBloc>(context).add(
+                                    ChatRoomCreate(
+                                        userName: state.userList[index]
+                                            ["userName"]));
+                              },
+                              child: Text(
+                                "Message",
+                                style: mediumTextFormFiledStyle(),
+                              ),
+                            ),
+                          );
+                        }),
                   );
                 }
                 if (state is ChatLoading) {
