@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          snapshot.data,
+                          "no chat found",
                           style: simpleStyle(),
                         ),
                       ],
