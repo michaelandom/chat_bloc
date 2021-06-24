@@ -34,8 +34,11 @@ class ChatNotFound extends ChatState {
 }
 
 class ChatAdded extends ChatState {
+  final String chatRoomId;
+
+  ChatAdded({this.chatRoomId});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [chatRoomId];
 }
 
 class GetChatConversationState extends ChatState {

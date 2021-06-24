@@ -1,5 +1,6 @@
 import 'package:chat_bloc/bloc/auth_bloc/auth_bloc.dart';
 import 'package:chat_bloc/bloc/chat/chat_bloc.dart';
+import 'package:chat_bloc/bloc/steam/stream_cubit.dart';
 import 'package:chat_bloc/db/k_shared_preference.dart';
 import 'package:chat_bloc/presentation/widget/appbar.dart';
 import 'package:chat_bloc/routes/app_routes.dart';
@@ -27,12 +28,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSignedOut) {
-          Navigator.pushReplacementNamed(context, Routers.ROOT);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSignedOut) {
+              Navigator.pushReplacementNamed(context, Routers.ROOT);
+            }
+          },
+        ),
+        BlocListener<StreamCubit, StreamState>(
+          listener: (context, state) {
+            if (state is StreamLoaded) {
+              print("stream ${state.data.docs}");
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: appBarMain(context),
         body: FutureBuilder(

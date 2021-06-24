@@ -30,8 +30,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event is ChatRoomCreate) {
       yield ChatLoading();
       final result = await dataBaseFunction.createChatRoom(event.userName);
-      if (result) {
-        yield ChatAdded();
+      if (result!=null) {
+        yield ChatAdded(chatRoomId: result);
       } else {
         yield ChatError();
       }

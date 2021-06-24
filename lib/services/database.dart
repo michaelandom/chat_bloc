@@ -43,7 +43,7 @@ class DataBaseFunction {
     return false;
   }
 
-  Future<bool> createChatRoom(String userName) async {
+  Future<String> createChatRoom(String userName) async {
     final currentUser = await localPreference.get(HSharedPreference.USER_NAME);
     List userList = [userName, currentUser];
     Map<String, dynamic> userMap = {
@@ -55,11 +55,11 @@ class DataBaseFunction {
           .collection("chatRoom")
           .doc("$userName-$currentUser")
           .set(userMap);
-      return true;
+      return "$userName-$currentUser";
     } catch (e) {
       print(e);
     }
-    return false;
+    return null;
   }
 
   Future<dynamic> getChatRoomList(String userName) async {
