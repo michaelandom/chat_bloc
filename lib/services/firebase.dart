@@ -68,20 +68,25 @@ class AuthService {
           await FirebaseAuth.instance.signInWithCredential(credential);
       if (userData.additionalUserInfo.isNewUser) {
         await dataBaseFunction.uploadUserInfo(
-            userData.additionalUserInfo.username,
-            userData.additionalUserInfo.providerId);
-        localPreference.set(
-            HSharedPreference.USER_NAME, userData.additionalUserInfo.username);
+            userData.additionalUserInfo.profile["name"],
+            userData.additionalUserInfo.profile["email"]);
+        localPreference.set(HSharedPreference.USER_NAME,
+            userData.additionalUserInfo.profile["name"]);
       } else {
-        final result = await dataBaseFunction
-            .getUserByEmail(userData.additionalUserInfo.providerId);
-        if (result != null) {
-          print("$result");
-          print("${result["userName"]}${result["email"]}");
-          localPreference.set(HSharedPreference.USER_NAME, result["userName"]);
-        } else {
-          return false;
-        }
+        print(
+            "userData.additionalUserInfo.providerId ${userData.additionalUserInfo.profile}");
+        localPreference.set(HSharedPreference.USER_NAME,
+            userData.additionalUserInfo.profile["name"]);
+        // final result = await dataBaseFunction.getUserByEmail(userData.additionalUserInfo.profile["email"]);
+        // print(
+        //     "userData.additionalUserInfo.providerId ${userData.additionalUserInfo.profile}");
+        // if (result != null) {
+        //   print("$result");
+        //   print("${result["userName"]}${result["email"]}");
+        //   localPreference.set(HSharedPreference.USER_NAME, result["userName"]);
+        // } else {
+        //   return false;
+        // }
       }
       return true;
     } catch (e) {

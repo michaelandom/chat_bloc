@@ -1,5 +1,7 @@
 import 'package:chat_bloc/bloc/chat/chat_bloc.dart';
+import 'package:chat_bloc/db/k_shared_preference.dart';
 import 'package:chat_bloc/presentation/widget/appbar.dart';
+import 'package:chat_bloc/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,11 +14,19 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController usernameCon;
+  String currentUser;
+  HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    userGet();
     usernameCon = TextEditingController();
+  }
+
+  void userGet() async {
+    currentUser = await localPreference.get(HSharedPreference.USER_NAME);
   }
 
   @override
@@ -92,6 +102,10 @@ class _SearchPageState extends State<SearchPage> {
                                     ChatRoomCreate(
                                         userName: state.userList[index]
                                             ["userName"]));
+                                Navigator.pushNamed(
+                                    context, Routers.CONVERSATION,
+                                    arguments:
+                                        "${state.userList[index]["userName"]}-$currentUser");
                               },
                               child: Text(
                                 "Message",
