@@ -55,23 +55,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: CircularProgressIndicator(),
               );
             }
-            return BlocBuilder<ChatBloc, ChatState>(
+            return BlocBuilder<StreamCubit, StreamState>(
               builder: (context, state) {
-                if (state is ChatLoading) {
+                if (state is StreamLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                if (state is ChatResult) {
+                if (state is StreamLoaded) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 16),
                     child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: state.chatRoomList.length,
+                        itemCount: state.data.docs.length,
                         itemBuilder: (context, index) {
                           String chatRoomId =
-                              state.chatRoomList[index]["chatRoomId"];
+                              state.data.docs[index]["chatRoomId"];
                           return ListTile(
                             onTap: () {
                               Navigator.pushNamed(context, Routers.CONVERSATION,
@@ -82,10 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             leading: CircularProgressIndicator(),
                             title: Text(
-                              state.chatRoomList[index]["userList"][0] ==
+                              state.data.docs[index]["userList"][0] ==
                                       currentUser
-                                  ? state.chatRoomList[index]["userList"][1]
-                                  : state.chatRoomList[index]["userList"][0],
+                                  ? state.data.docs[index]["userList"][1]
+                                  : state.data.docs[index]["userList"][0],
                               style: mediumTextFormFiledStyle(),
                             ),
                             subtitle: Text(
