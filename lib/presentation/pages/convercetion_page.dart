@@ -66,22 +66,29 @@ class _ConversationPageState extends State<ConversationPage> {
                                 shrinkWrap: true,
                                 itemCount: conversation.length,
                                 itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                          color: currentUser !=
-                                                  conversation[index]["sendBy"]
-                                              ? Theme.of(context).accentColor
-                                              : Theme.of(context).primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(
-                                          conversation[index]["message"],
-                                          style: mediumTextFormFiledStyle(),
+                                  return Container(
+                                    alignment: currentUser !=
+                                            conversation[index]["sendBy"]
+                                        ? Alignment.centerLeft
+                                        : Alignment.centerRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: currentUser !=
+                                                    conversation[index]
+                                                        ["sendBy"]
+                                                ? Theme.of(context).accentColor
+                                                : Theme.of(context)
+                                                    .primaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(40)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            conversation[index]["message"],
+                                            style: mediumTextFormFiledStyle(),
+                                          ),
                                         ),
                                       ),
                                     ),
