@@ -58,7 +58,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         shrinkWrap: true,
                         itemCount: state.chatRoomList.length,
                         itemBuilder: (context, index) {
+                          String chatRoomId =
+                              state.chatRoomList[index]["chatRoomId"];
                           return ListTile(
+                            onTap: () {
+                              Navigator.pushNamed(context, Routers.CONVERSATION,
+                                      arguments: chatRoomId)
+                                  .whenComplete(() {
+                                userGet();
+                              });
+                            },
                             leading: CircularProgressIndicator(),
                             title: Text(
                               state.chatRoomList[index]["userList"][0] ==
@@ -106,7 +115,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(Routers.SEARCH);
+            Navigator.of(context).pushNamed(Routers.SEARCH).whenComplete(() {
+              BlocProvider.of<ChatBloc>(context)
+                  .add(GetChatRoom(userName: currentUser));
+            });
           },
           child: Icon(Icons.add),
         ),

@@ -1,5 +1,6 @@
 import 'package:chat_bloc/bloc/auth_bloc/auth_bloc.dart';
 import 'package:chat_bloc/db/k_shared_preference.dart';
+import 'package:chat_bloc/presentation/pages/convercetion_page.dart';
 import 'package:chat_bloc/presentation/pages/forgetPassword_page.dart';
 import 'package:chat_bloc/presentation/pages/home_page.dart';
 import 'package:chat_bloc/presentation/pages/search.dart';
@@ -15,6 +16,7 @@ class Routers {
   static const String SIGN_UP = "/signUp";
   static const String FORGET_PASSWORD = "/forgetPassword";
   static const String SEARCH = "/search";
+  static const String CONVERSATION = "/conversation";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -34,6 +36,10 @@ class Routers {
         return MaterialPageRoute(builder: (_) => ForgetPasswordPage());
       case SEARCH:
         return MaterialPageRoute(builder: (_) => SearchPage());
+
+      case CONVERSATION:
+        return MaterialPageRoute(
+            builder: (_) => ConversationPage(), settings: settings);
     }
   }
 

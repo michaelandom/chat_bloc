@@ -74,4 +74,33 @@ class DataBaseFunction {
     }
     return false;
   }
+
+  Future<dynamic> getChatRoomChatList(String chatRomeId) async {
+    try {
+      final userData = await FirebaseFirestore.instance
+          .collection("chatRoom")
+          .doc(chatRomeId)
+          .collection("chats")
+          .get();
+      return userData.docs;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  Future<dynamic> addChatRoomChatList(
+      String chatRomeId, Map<String, dynamic> map) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("chatRoom")
+          .doc(chatRomeId)
+          .collection("chats")
+          .add(map);
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }

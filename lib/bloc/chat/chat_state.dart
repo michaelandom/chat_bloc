@@ -18,15 +18,14 @@ class ChatSingleResult extends ChatState {
   final List userList;
   ChatSingleResult({this.userList});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userList];
 }
 
 class ChatResult extends ChatState {
   final List chatRoomList;
-
   ChatResult({this.chatRoomList});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [chatRoomList];
 }
 
 class ChatNotFound extends ChatState {
@@ -35,6 +34,25 @@ class ChatNotFound extends ChatState {
 }
 
 class ChatAdded extends ChatState {
+  @override
+  List<Object> get props => [];
+}
+
+class GetChatConversationState extends ChatState {
+  final List conversation;
+
+  GetChatConversationState({this.conversation});
+
+  @override
+  List<Object> get props => [conversation];
+}
+
+class AddedChatConversationState extends ChatState {
+  @override
+  List<Object> get props => [];
+}
+
+class NoChatConversation extends ChatState {
   @override
   List<Object> get props => [];
 }

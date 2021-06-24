@@ -40,16 +40,14 @@ class _SignInPageState extends State<SignInPage> {
           if (state is AuthSignedIn) {
             Navigator.pushReplacementNamed(context, Routers.HOME);
           }
-
           if (state is AuthLoading || state is AuthLoadingEmail) {
             isLoading = true;
           } else {
             isLoading = false;
           }
-
           if (state is AuthError) {
             massageDialog(
-                context, DialogType.ERROR, "Error", "there was an error!!!");
+                context, DialogType.ERROR, "Error", "There was an error!!!");
           }
         },
         child: AbsorbPointer(

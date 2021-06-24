@@ -14,6 +14,26 @@ class ChatRoomCreate extends ChatEvent {
   List<Object> get props => throw UnimplementedError();
 }
 
+class GetChatConversation extends ChatEvent {
+  final chatRoomId;
+
+  GetChatConversation({this.chatRoomId});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+}
+
+class AddChatConversation extends ChatEvent {
+  final String chatRoomId;
+  final Map<String, dynamic> message;
+  AddChatConversation({this.chatRoomId, this.message});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => throw UnimplementedError();
+}
+
 class GetChatRoom extends ChatEvent {
   final userName;
 
