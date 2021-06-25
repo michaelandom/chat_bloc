@@ -9,22 +9,28 @@ part 'stream_state.dart';
 
 class StreamCubit extends Cubit<StreamState> {
   HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
-  Stream connectivityStream;
   StreamSubscription streamSubscription;
   StreamCubit() : super(StreamLoading()) {
-    final currentUser = localPreference.get(HSharedPreference.USER_NAME);
-
-    FirebaseFirestore.instance
+    f();
+  }
+  Future<void> f() async {
+    final currentUser = await localPreference.get(HSharedPreference.USER_NAME);
+    streamSubscription = FirebaseFirestore.instance
         .collection("chatRoom")
-        .where("userList", arrayContains: "tyu")
+        .where("userList", arrayContains: currentUser)
         .snapshots()
         .listen((event) {
       if (event.docs != null) {
         emitInternetConnected(event);
       }
     });
-    // streamSubscription = connectivityStream.listen((event) {
-    // });
   }
+
   void emitInternetConnected(dynamic _data) => emit(StreamLoaded(data: _data));
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    streamSubscription.cancel();
+    return super.close();
+  }
 }
