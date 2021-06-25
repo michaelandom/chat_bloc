@@ -8,7 +8,8 @@ class DataBaseFunction {
     try {
       final userData = await FirebaseFirestore.instance
           .collection("users")
-          .where("userName", isEqualTo: userName)
+          .where("userName", isGreaterThanOrEqualTo: userName)
+          .where("userName", isLessThan: userName + 'z')
           .get();
       return userData.docs;
     } catch (e) {
@@ -50,16 +51,40 @@ class DataBaseFunction {
       "userList": userList,
       "chatRoomId": "$userName-$currentUser"
     };
-    try {
-      await FirebaseFirestore.instance
-          .collection("chatRoom")
-          .doc("$userName-$currentUser")
-          .set(userMap);
-      return "$userName-$currentUser";
-    } catch (e) {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc("$userName-$currentUser");
+    DocumentReference documentReferenceRev = FirebaseFirestore.instance
+        .collection("chatRoom")
+        .doc("$currentUser-$userName");
+
+    final result =
+        await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+      DocumentSnapshot snapshotRev =
+          await transaction.get(documentReferenceRev);
+      if (!snapshot.exists && !snapshotRev.exists) {
+        try {
+          await FirebaseFirestore.instance
+              .collection("chatRoom")
+              .doc("$userName-$currentUser")
+              .set(userMap);
+          return "$userName-$currentUser";
+        } catch (e) {
+          print(e);
+          return null;
+        }
+      }
+      if (snapshot.exists) {
+        return "$userName-$currentUser";
+      } else {
+        return "$currentUser-$userName";
+      }
+    }).catchError((e) {
       print(e);
-    }
-    return null;
+      return null;
+    });
+    return result;
   }
 
   Future<dynamic> getChatRoomList(String userName) async {

@@ -21,12 +21,12 @@ class StreamCubit extends Cubit<StreamState> {
         .snapshots()
         .listen((event) {
       if (event.docs != null) {
-        emitInternetConnected(event);
+        emitStreamLoaded(event);
       }
     });
   }
 
-  void emitInternetConnected(dynamic _data) => emit(StreamLoaded(data: _data));
+  void emitStreamLoaded(dynamic _data) => emit(StreamLoaded(data: _data));
   @override
   Future<void> close() {
     // TODO: implement close

@@ -101,8 +101,7 @@ class _SearchPageState extends State<SearchPage> {
                                 onPressed: () {
                                   BlocProvider.of<ChatBloc>(context).add(
                                       ChatRoomCreate(
-                                          userName: state.userList[index]
-                                              ["userName"]));
+                                          userName: state.userList[index]["userName"]));
                                 },
                                 child: Text(
                                   "Message",
@@ -121,10 +120,10 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     );
                   }
-                  if (state is ChatNotFound) {
+                  if (state is ChatUserNotFound) {
                     return Center(
                       child: Text(
-                        "chat not found",
+                        "chat user not found",
                         style: simpleStyle(),
                       ),
                     );

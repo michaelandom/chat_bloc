@@ -33,6 +33,11 @@ class ChatNotFound extends ChatState {
   List<Object> get props => [];
 }
 
+class ChatUserNotFound extends ChatState {
+  @override
+  List<Object> get props => [];
+}
+
 class ChatAdded extends ChatState {
   final String chatRoomId;
 

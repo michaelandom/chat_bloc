@@ -22,7 +22,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (result is List ? result.length > 0 : false) {
         yield ChatSingleResult(userList: result);
       } else if (result is List ? result.length == 0 : false) {
-        yield ChatNotFound();
+        yield ChatUserNotFound();
       } else {
         yield ChatError();
       }
@@ -30,7 +30,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (event is ChatRoomCreate) {
       yield ChatLoading();
       final result = await dataBaseFunction.createChatRoom(event.userName);
-      if (result!=null) {
+      print("chatAdder $result");
+      if (result != null) {
         yield ChatAdded(chatRoomId: result);
       } else {
         yield ChatError();
