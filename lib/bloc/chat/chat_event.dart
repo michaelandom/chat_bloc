@@ -27,7 +27,7 @@ class GetChatConversation extends ChatEvent {
 class AddChatConversation extends ChatEvent {
   final String chatRoomId;
   final Map<String, dynamic> message;
-  AddChatConversation({this.chatRoomId, this.message});
+  AddChatConversation({required this.chatRoomId, required this.message});
 
   @override
   // TODO: implement props
@@ -53,7 +53,7 @@ class AddChat extends ChatEvent {
 class SearchUser extends ChatEvent {
   final String username;
 
-  SearchUser({this.username});
+  SearchUser({required this.username});
 
   @override
   // TODO: implement props

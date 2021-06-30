@@ -12,9 +12,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController userController;
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController userController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
   GlobalKey<FormState> signUpForm = GlobalKey<FormState>();
   bool isLoading = false;
   @override
@@ -73,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextFormField(
                           controller: userController,
                           validator: (value) {
-                            if (value.length < 3) {
+                            if (value!.length < 3) {
                               return "username cant be less than 3";
                             }
                             return null;
@@ -102,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             obscureText: true,
                             keyboardType: TextInputType.visiblePassword,
                             validator: (value) {
-                              if (value.length < 6) {
+                              if (value!.length < 6) {
                                 return "password cant be less then 6";
                               }
                               return null;
@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: GestureDetector(
                                 onTap: () async {
                                   print("sd");
-                                  if (signUpForm.currentState.validate()) {
+                                  if (signUpForm.currentState!.validate()) {
                                     BlocProvider.of<AuthBloc>(context).add(
                                         EmailAndPasswordSignUpEvent(
                                             email: emailController.text,

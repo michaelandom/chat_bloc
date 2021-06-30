@@ -44,7 +44,7 @@ class DataBaseFunction {
     return false;
   }
 
-  Future<String> createChatRoom(String userName) async {
+  Future<String?> createChatRoom(String userName) async {
     final currentUser = await localPreference.get(HSharedPreference.USER_NAME);
     List userList = [userName, currentUser];
     Map<String, dynamic> userMap = {

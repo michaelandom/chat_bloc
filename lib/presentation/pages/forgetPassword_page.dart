@@ -12,7 +12,7 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
-  TextEditingController emailController;
+  late TextEditingController emailController;
   GlobalKey<FormState> forgetPasswordForm = GlobalKey<FormState>();
   bool isLoading = false;
   @override
@@ -88,7 +88,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () async {
-                                  if (forgetPasswordForm.currentState
+                                  if (forgetPasswordForm.currentState!
                                       .validate()) {
                                     BlocProvider.of<AuthBloc>(context)
                                         .add(ResetPasswordEvent(

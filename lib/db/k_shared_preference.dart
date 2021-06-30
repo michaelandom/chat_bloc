@@ -18,7 +18,7 @@ class HSharedPreference {
       return prefs.setBool(key, value);
     } else if (value is double) {
       return prefs.setDouble(key, value);
-    } else if (value is List) {
+    } else if (value is List<String>) {
       return prefs.setStringList(key, value);
     } else {
       return prefs.setString(key, value.toString());

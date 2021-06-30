@@ -9,7 +9,7 @@ part 'stream_state.dart';
 
 class StreamCubit extends Cubit<StreamState> {
   HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
-  StreamSubscription streamSubscription;
+  late StreamSubscription streamSubscription;
   StreamCubit() : super(StreamLoading()) {
     f();
   }

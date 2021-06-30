@@ -3,12 +3,12 @@ import 'package:chat_bloc/bloc/auth_bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget appBarMain(BuildContext context) {
+AppBar appBarMain(BuildContext context) {
   return AppBar(
     title: Text(
       "chart bloc",
       style:
-          Theme.of(context).textTheme.headline5.copyWith(color: Colors.white),
+          Theme.of(context).textTheme.headline5!.copyWith(color: Colors.white),
     ),
     actions: [
       BlocBuilder<AuthBloc, AuthState>(

@@ -52,7 +52,8 @@ class AuthService {
   Future<bool> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount googleUser =
+          GoogleSignIn().signIn() as GoogleSignInAccount;
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
@@ -66,17 +67,17 @@ class AuthService {
       // Once signed in, return the UserCredential
       final userData =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userData.additionalUserInfo.isNewUser) {
+      if (userData.additionalUserInfo!.isNewUser) {
         await dataBaseFunction.uploadUserInfo(
-            userData.additionalUserInfo.profile["name"],
-            userData.additionalUserInfo.profile["email"]);
+            userData.additionalUserInfo!.profile!["name"],
+            userData.additionalUserInfo!.profile!["email"]);
         localPreference.set(HSharedPreference.USER_NAME,
-            userData.additionalUserInfo.profile["name"]);
+            userData.additionalUserInfo!.profile!["name"]);
       } else {
         print(
-            "userData.additionalUserInfo.providerId ${userData.additionalUserInfo.profile}");
+            "userData.additionalUserInfo.providerId ${userData.additionalUserInfo!.profile}");
         localPreference.set(HSharedPreference.USER_NAME,
-            userData.additionalUserInfo.profile["name"]);
+            userData.additionalUserInfo!.profile!["name"]);
         // final result = await dataBaseFunction.getUserByEmail(userData.additionalUserInfo.profile["email"]);
         // print(
         //     "userData.additionalUserInfo.providerId ${userData.additionalUserInfo.profile}");

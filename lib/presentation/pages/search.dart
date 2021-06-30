@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key key}) : super(key: key);
-
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController usernameCon;
+  late TextEditingController usernameCon;
 
   @override
   void initState() {
@@ -101,7 +99,8 @@ class _SearchPageState extends State<SearchPage> {
                                 onPressed: () {
                                   BlocProvider.of<ChatBloc>(context).add(
                                       ChatRoomCreate(
-                                          userName: state.userList[index]["userName"]));
+                                          userName: state.userList[index]
+                                              ["userName"]));
                                 },
                                 child: Text(
                                   "Message",

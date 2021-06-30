@@ -11,8 +11,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  TextEditingController emailController;
-  TextEditingController passwordController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
   GlobalKey<FormState> signInForm = GlobalKey<FormState>();
   bool isLoading = false;
   @override
@@ -86,7 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                             obscureText: true,
                             keyboardType: TextInputType.visiblePassword,
                             validator: (value) {
-                              if (value.length < 6) {
+                              if (value!.length < 6) {
                                 return "password cant be less then 6";
                               }
                               return null;
@@ -119,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () async {
-                                  if (signInForm.currentState.validate()) {
+                                  if (signInForm.currentState!.validate()) {
                                     BlocProvider.of<AuthBloc>(context).add(
                                         EmailAndPasswordSignInEvent(
                                             email: emailController.text,

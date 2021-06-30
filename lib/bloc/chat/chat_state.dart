@@ -16,14 +16,14 @@ class ChatLoading extends ChatState {
 
 class ChatSingleResult extends ChatState {
   final List userList;
-  ChatSingleResult({this.userList});
+  ChatSingleResult({required this.userList});
   @override
   List<Object> get props => [userList];
 }
 
 class ChatResult extends ChatState {
   final List chatRoomList;
-  ChatResult({this.chatRoomList});
+  ChatResult({required this.chatRoomList});
   @override
   List<Object> get props => [chatRoomList];
 }
@@ -41,7 +41,7 @@ class ChatUserNotFound extends ChatState {
 class ChatAdded extends ChatState {
   final String chatRoomId;
 
-  ChatAdded({this.chatRoomId});
+  ChatAdded({required this.chatRoomId});
   @override
   List<Object> get props => [chatRoomId];
 }
@@ -49,7 +49,7 @@ class ChatAdded extends ChatState {
 class GetChatConversationState extends ChatState {
   final List conversation;
 
-  GetChatConversationState({this.conversation});
+  GetChatConversationState({required this.conversation});
 
   @override
   List<Object> get props => [conversation];

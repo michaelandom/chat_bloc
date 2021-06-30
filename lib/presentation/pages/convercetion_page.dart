@@ -12,9 +12,9 @@ class ConversationPage extends StatefulWidget {
 
 class _ConversationPageState extends State<ConversationPage> {
   HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
-  String currentUser;
-  String chatRoomId;
-  TextEditingController messageController;
+  late String currentUser;
+  late String chatRoomId;
+  late TextEditingController messageController;
   void initState() {
     super.initState();
     messageController = TextEditingController();
@@ -27,7 +27,7 @@ class _ConversationPageState extends State<ConversationPage> {
 
   Future<String> userGet(BuildContext context) async {
     currentUser = await localPreference.get(HSharedPreference.USER_NAME);
-    chatRoomId = ModalRoute.of(context).settings.arguments;
+    chatRoomId = ModalRoute.of(context)?.settings.arguments as String;
     print("chatRoomId $chatRoomId");
     //  BlocProvider.of<ChatBloc>(context).add(GetChatConversation(chatRoomId: chatRoomId));
     return currentUser;

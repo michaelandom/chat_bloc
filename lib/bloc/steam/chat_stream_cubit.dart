@@ -7,9 +7,10 @@ import 'package:equatable/equatable.dart';
 part 'chat_stream_state.dart';
 
 class ChatStreamCubit extends Cubit<ChatStreamState> {
-  StreamSubscription streamSubscription;
+  late StreamSubscription streamSubscription;
   final String chatRoomId;
-  ChatStreamCubit({this.chatRoomId}) : super(ChatStreamStreamLoading()) {
+  ChatStreamCubit({required this.chatRoomId})
+      : super(ChatStreamStreamLoading()) {
     f();
   }
   Future<void> f() async {
