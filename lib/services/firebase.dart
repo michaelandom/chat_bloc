@@ -1,6 +1,7 @@
 import 'package:chat_bloc/db/k_shared_preference.dart';
 import 'package:chat_bloc/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -50,54 +51,72 @@ class AuthService {
   }
 
   Future<bool> signInWithGoogle() async {
-    try {
-      // Trigger the authentication flow
-      final GoogleSignInAccount googleUser =
-          GoogleSignIn().signIn() as GoogleSignInAccount;
+    if (!kIsWeb) {
+      try {
+        // Trigger the authentication flow
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        // Obtain the auth details from the request
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser!.authentication;
+        // Create a new credential
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      // Once signed in, return the UserCredential
-      final userData =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      if (userData.additionalUserInfo!.isNewUser) {
-        await dataBaseFunction.uploadUserInfo(
-            userData.additionalUserInfo!.profile!["name"],
-            userData.additionalUserInfo!.profile!["email"]);
-        localPreference.set(HSharedPreference.USER_NAME,
-            userData.additionalUserInfo!.profile!["name"]);
-      } else {
-        print(
-            "userData.additionalUserInfo.providerId ${userData.additionalUserInfo!.profile}");
-        localPreference.set(HSharedPreference.USER_NAME,
-            userData.additionalUserInfo!.profile!["name"]);
-        // final result = await dataBaseFunction.getUserByEmail(userData.additionalUserInfo.profile["email"]);
-        // print(
-        //     "userData.additionalUserInfo.providerId ${userData.additionalUserInfo.profile}");
-        // if (result != null) {
-        //   print("$result");
-        //   print("${result["userName"]}${result["email"]}");
-        //   localPreference.set(HSharedPreference.USER_NAME, result["userName"]);
-        // } else {
-        //   return false;
-        // }
+        // Once signed in, return the UserCredential
+        final userData =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        if (userData.additionalUserInfo!.isNewUser) {
+          await dataBaseFunction.uploadUserInfo(
+              userData.additionalUserInfo!.profile!["name"],
+              userData.additionalUserInfo!.profile!["email"]);
+          localPreference.set(HSharedPreference.USER_NAME,
+              userData.additionalUserInfo!.profile!["name"]);
+        } else {
+          print(
+              "userData.additionalUserInfo.providerId ${userData.additionalUserInfo!.profile}");
+          localPreference.set(HSharedPreference.USER_NAME,
+              userData.additionalUserInfo!.profile!["name"]);
+        }
+        return true;
+      } catch (e) {
+        print("error is $e");
       }
-      return true;
-    } catch (e) {
-      print("error is $e");
+    } else {
+      try {
+        // Trigger the authentication flow
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        googleProvider
+            .addScope('https://www.googleapis.com/auth/contacts.readonly');
+        googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+
+        final userData =
+            await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        if (userData.additionalUserInfo!.isNewUser) {
+          await dataBaseFunction.uploadUserInfo(
+              userData.additionalUserInfo!.profile!["name"],
+              userData.additionalUserInfo!.profile!["email"]);
+          localPreference.set(HSharedPreference.USER_NAME,
+              userData.additionalUserInfo!.profile!["name"]);
+        } else {
+          print(
+              "userData.additionalUserInfo.providerId ${userData.additionalUserInfo!.profile}");
+          localPreference.set(HSharedPreference.USER_NAME,
+              userData.additionalUserInfo!.profile!["name"]);
+        }
+        return true;
+      } catch (e) {
+        print("error is $e");
+      }
     }
     return false;
   }
 
   Future<bool> signOut() async {
     try {
+      await GoogleSignIn().signOut();
       await _auth.signOut();
       return true;
     } catch (e) {
