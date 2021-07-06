@@ -1,6 +1,6 @@
 part of 'theme_bloc.dart';
 
-abstract class ThemeEvent extends Equatable {
+class ThemeEvent extends Equatable {
   final AppTheme appTheme;
   ThemeEvent({required this.appTheme});
   @override

@@ -8,15 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
-
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   HSharedPreference localPreference = GetHSPInstance.hSharedPreference;
-  String currentUser="";
+  String currentUser = "";
 
   Future<String> userGet() async {
     currentUser = await localPreference.get(HSharedPreference.USER_NAME);
@@ -40,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         child: Scaffold(
           appBar: appBarMain(context),
+          drawer: appDrawer(context),
           body: FutureBuilder(
             future: userGet(),
             builder: (context, snapshot) {
