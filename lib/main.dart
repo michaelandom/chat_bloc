@@ -2,6 +2,7 @@ import 'package:chat_bloc/bloc/auth_bloc/auth_bloc.dart';
 import 'package:chat_bloc/bloc/chat/chat_bloc.dart';
 import 'package:chat_bloc/bloc/mybloc.dart';
 import 'package:chat_bloc/routes/app_routes.dart';
+import 'package:chat_bloc/services/local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ Future<void> backgroundMessage(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HLocalNotification localNotification = HLocalNotification();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundMessage);
   Bloc.observer = MyBlocObserver();
@@ -45,6 +47,7 @@ class _MyAppState extends State<MyApp> {
       if (message.notification != null) {
         print(message.notification!.body);
         print(message.notification!.title);
+        HLocalNotification.showNotification(message);
       }
     });
 
